@@ -9,6 +9,50 @@ public class EnemySpanwer : MonoBehaviour
     [SerializeField] int spawnCount;        // 积己且 俺荐.
     [SerializeField] Transform[] points;    // 利捞 捞悼且 困摹 谅钎 硅凯.
 
+    private void Start()
+    {
+        /*
+        Gacha gacha = new Gacha();
+
+        #region 单捞磐 檬扁拳.
+        gacha.AddItem("5己 亥萍", 0.6f);
+        gacha.AddItem("5己 柳", 0.6f);
+        gacha.AddItem("5己 促捞风农", 0.6f);
+        gacha.AddItem("5己 阿没", 0.6f);
+        gacha.AddItem("5己 葛唱", 0.6f);
+
+        gacha.AddItem("4己 吝款", 5.1f);
+        gacha.AddItem("4己 乔浇", 5.1f);
+        gacha.AddItem("4己 青眠", 5.1f);
+        gacha.AddItem("4己 府荤", 5.1f);
+        gacha.AddItem("4己 饭捞历", 5.1f);
+        gacha.AddItem("4己 览堡", 5.1f);
+        gacha.AddItem("4己 氢釜", 5.1f);
+        gacha.AddItem("4己 海齿", 5.1f);
+        gacha.AddItem("4己 汲帕", 5.1f);
+
+        gacha.AddItem("3己 A", 94.3f);
+        gacha.AddItem("3己 B", 94.3f);
+        gacha.AddItem("3己 C", 94.3f);
+        gacha.AddItem("3己 D", 94.3f);
+        gacha.AddItem("3己 E", 94.3f);
+        gacha.AddItem("3己 F", 94.3f);
+        gacha.AddItem("3己 G", 94.3f);
+        gacha.AddItem("3己 H", 94.3f);
+        gacha.AddItem("3己 I", 94.3f);
+        gacha.AddItem("3己 J", 94.3f);
+        gacha.AddItem("3己 K", 94.3f);
+        #endregion
+
+        BuyGacha(gacha, 10);
+        */
+    }
+    private void BuyGacha(Gacha gacha, int count)
+    {
+        for (int i = 0; i < count; i++)
+            Debug.Log(gacha.GetGacha());
+    }
+
     [ContextMenu("Spawn Enemy")]
     public void StartSpawn()
     {

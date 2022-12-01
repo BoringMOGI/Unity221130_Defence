@@ -5,6 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] float moveSpeed;
+    [SerializeField] int hp;
 
     Queue<Transform> point; // 적이 움직일 위치 지점 큐.
     float rotate;
@@ -40,6 +41,14 @@ public class Enemy : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, rotate += -360 * Time.deltaTime);
     }
 
+    public void OnDamaged(int power)
+    {
+        hp = Mathf.Clamp(hp - power, 0, 999);
+        if(hp <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
     private void OnGoal()
     {
         Destroy(gameObject);

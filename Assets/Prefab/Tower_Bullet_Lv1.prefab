@@ -97,3 +97,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c33c1391399e9104ba00531b41df6d40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 2094213106673698554, guid: b63ef973fe43162419a6f26bc429ac81, type: 3}
+  bulletSpeed: 10
+  attackRange: 2.5
+  attackRate: 3
+  attackPower: 1
+  attackMask:
+    serializedVersion: 2
+    m_Bits: 64
