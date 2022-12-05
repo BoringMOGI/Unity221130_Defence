@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
+    [Header("Info")]
+    [SerializeField] int price;             // 구매 가격.
+
     [Header("Bullet")]
     [SerializeField] Bullet bulletPrefab;   // 총알 프리팹.
     [SerializeField] float bulletSpeed;     // 총알 속도.
@@ -17,6 +20,8 @@ public class Tower : MonoBehaviour
 
     private float delayTime;                // 공격 대기 시간.
     private Enemy target;                   // 공격 대상.
+
+    public int Price => price;              // 가격을 읽기 전용 프로퍼티로 외부 공개.
 
     private void Start()
     {

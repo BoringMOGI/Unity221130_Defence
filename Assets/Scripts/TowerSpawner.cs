@@ -38,7 +38,12 @@ public class TowerSpawner : MonoBehaviour
         if (wall == null || wall.isTower)
             return;
 
-        Tower tower = Instantiate(towerPrefab, transform);  // 타워를 나의 자식으로 생성한다.
-        wall.SetTower(tower);                               // wall의 SetTower를 호출하면서 tower를 넘긴다.
+        // 게임매니저를 통해 현재 설치하려는 타워의 가격을 성공적으로 소비했는지 체크.
+        // 만약 성공적으로 소비했다면 타워를 설치한다.
+        if (GameManager.Instance.UseGold(towerPrefab.Price))
+        {
+            Tower tower = Instantiate(towerPrefab, transform);  // 타워를 나의 자식으로 생성한다.
+            wall.SetTower(tower);                               // wall의 SetTower를 호출하면서 tower를 넘긴다.
+        }
     }
 }

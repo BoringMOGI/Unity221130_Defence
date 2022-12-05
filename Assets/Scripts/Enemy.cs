@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] float moveSpeed;
     [SerializeField] int hp;
+    [SerializeField] int gold;
     [SerializeField] Vector3 hpBarOffset;
 
     Queue<Transform> point; // 적이 움직일 위치 지점 큐.
@@ -59,12 +60,19 @@ public class Enemy : MonoBehaviour
         hpBar.SetHp(hp, maxHp);
         if(hp <= 0)
         {
-            Destroy(gameObject);
-            Destroy(hpBar.gameObject);
+            GameManager.Instance.AddGold(gold);     // 적이 공격을 받아 죽었을 때 골드 획득.
+            OnDeadEnemy();                          // 적 삭제.
+
         }
     }
     private void OnGoal()
     {
+        GameManager.Instance.OnGoalEnemy();         // GM에게 적이 도착했다고 알림.
+        OnDeadEnemy();                              // 적 삭제.
+    }
+    private void OnDeadEnemy()
+    {
+        EnemySpanwer.Instance.OnDestroyEnemy();
         Destroy(gameObject);
         Destroy(hpBar.gameObject);
     }
