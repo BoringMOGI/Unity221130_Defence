@@ -62,7 +62,6 @@ public class Enemy : MonoBehaviour
         {
             GameManager.Instance.AddGold(gold);     // 적이 공격을 받아 죽었을 때 골드 획득.
             OnDeadEnemy();                          // 적 삭제.
-
         }
     }
     private void OnGoal()

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4750316141817236346}
   - component: {fileID: 651624608403887536}
-  - component: {fileID: 6557979197254456980}
+  - component: {fileID: 1371131460668927138}
   m_Layer: 0
   m_Name: Tower_Bullet_Lv1
   m_TagString: Untagged
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6557979197254456980
+--- !u!114 &1371131460668927138
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,15 +94,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 2494434207656126481}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c33c1391399e9104ba00531b41df6d40, type: 3}
+  m_Script: {fileID: 11500000, guid: f24cc6b072bfc9d48a0fd386af23a01b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  price: 300
-  bulletPrefab: {fileID: 2094213106673698554, guid: b63ef973fe43162419a6f26bc429ac81, type: 3}
-  bulletSpeed: 10
+  price: 250
   attackRange: 2.5
-  attackRate: 1.5
+  attackRate: 1
   attackPower: 1
   attackMask:
     serializedVersion: 2
     m_Bits: 64
+  bulletPrefab: {fileID: 2094213106673698554, guid: b63ef973fe43162419a6f26bc429ac81, type: 3}
+  bulletSpeed: 20

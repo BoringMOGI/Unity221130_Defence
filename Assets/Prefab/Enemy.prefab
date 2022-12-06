@@ -115,6 +115,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2.5
-  hp: 2
+  hp: 5
   gold: 30
   hpBarOffset: {x: 0, y: 0.75, z: 0}

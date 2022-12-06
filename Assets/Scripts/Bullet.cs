@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    [SerializeField] ParticleSystem fx;
+
     Enemy target;
     float moveSpeed;
     int power;
@@ -30,6 +32,8 @@ public class Bullet : MonoBehaviour
         if(Vector3.Distance(transform.position, target.transform.position) <= 0.0f)
         {
             target.OnDamaged(power);
+            Vector3 fxPosition = transform.position + Vector3.back;
+            Instantiate(fx, fxPosition, Quaternion.identity);
             Destroy(gameObject);
         }
 

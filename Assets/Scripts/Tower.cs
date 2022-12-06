@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Tower : MonoBehaviour
+public abstract class Tower : MonoBehaviour
 {
     [Header("Info")]
     [SerializeField] int price;             // 구매 가격.
-
-    [Header("Bullet")]
-    [SerializeField] Bullet bulletPrefab;   // 총알 프리팹.
-    [SerializeField] float bulletSpeed;     // 총알 속도.
 
     [Header("Attack")]
     [SerializeField] float attackRange;     // 공격 범위.
@@ -19,7 +15,8 @@ public class Tower : MonoBehaviour
     [SerializeField] LayerMask attackMask;  // 공격 대상 마스크.
 
     private float delayTime;                // 공격 대기 시간.
-    private Enemy target;                   // 공격 대상.
+    protected Enemy target;                 // 공격 대상.
+    protected LayerMask EnemyMask => attackMask;
 
     public int Price => price;              // 가격을 읽기 전용 프로퍼티로 외부 공개.
 
@@ -60,22 +57,23 @@ public class Tower : MonoBehaviour
         // MoveToward(A, B, T) : A가 B값으로 T만큼 변한 값 (등속)
         // Slerp(A, B, F) : A가 B값으로 T의 비율로 변한 값 (곡선)
 
-        Quaternion lookRotation;
+        Quaternion lookRotation = Quaternion.identity;
         if(target != null)
         {
             // FromToRotation(축 방향, 실제 바라 볼 방향)
             // = 축 방향을 실제 바라 볼 방향으로 향하는 회전 값을 반환.
             Vector3 dir = (target.transform.position - transform.position);
-            lookRotation = Quaternion.FromToRotation(Vector2.right, dir);            
+            lookRotation = Quaternion.FromToRotation(Vector2.right, dir);
+
+            // 현재 내 회전 값에서 목표 방향까지 부드럽게(Smooth) 돌린다.
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 15 * Time.deltaTime);
         }
-        else
+        /*else
         {
             // Euler(Vector3) : Vector3(오일러 각도)를 사원수(Quaternion)로 바꿔주는 함수.
             lookRotation = Quaternion.Euler(Vector2.right);
-        }
-
-        // 현재 내 회전 값에서 목표 방향까지 부드럽게(Smooth) 돌린다.
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 15 * Time.deltaTime);
+        }*/
+                
     }
     private void AttackToTarget()
     {
@@ -84,15 +82,16 @@ public class Tower : MonoBehaviour
         if (delayTime <= 0.0f && target != null)                                // 대기 시간이 끝났다면..
         {
             delayTime = attackRate;                                             // 공격 대기 시간 갱신.
-
-            // 총알 프리팹을 클론으로 생성해 정보 대입.
-            Bullet bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
-            bullet.Setup(target, bulletSpeed, attackPower);
+            AttackToTarget(target, attackPower);
         }
     }
 
+    // abstract 함수는 선언만 할 수 있다.
+    // 클래스를 상속받는 자식 클래스는 무조건 상속해야한다.
+    protected abstract void AttackToTarget(Enemy target, int attackPower);
 
-    private void OnDrawGizmos()
+
+    protected virtual void OnDrawGizmosSelected()
     {
         // 공격 범위 기즈모.
         Gizmos.color = Color.red;

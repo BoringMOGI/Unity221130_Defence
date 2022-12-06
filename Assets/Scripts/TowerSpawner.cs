@@ -17,6 +17,10 @@ public class TowerSpawner : MonoBehaviour
     void Update()
     {
         // 마우스 왼쪽 버튼을 눌렀을 때.
+        // Input.GetMouseButton : 마우스 버튼을 누르고 있는 동안 계속
+        // Input.GetMouseButtonUp : 마우스 버튼을 땠을 때.
+        // Input.GetMouseButtonDown : 마우스 버튼을 눌렀을 때.
+        // 매개변수 button > 0:왼쪽, 1:오른쪽, 2:휠, 3:추가버튼1, 4:추가버튼2
         if(Input.GetMouseButtonDown(0))
         {
             // 스크린 좌표 상 마우스 포지션의 위치를 월드 상 좌표로 변경시켜준다.
