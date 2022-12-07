@@ -10,10 +10,10 @@ public class ExplodeTower : Tower
 
     // 1.일반 타워와 같이 공격 주기가 있고 시간이 되었을 때 대상을 공격한다.
     // 2.이때 일정 범위에 있는 적에게도 데미지를 준다.
-    protected override void AttackToTarget(Enemy _target, int attackPower)
+    protected override void Attack()
     {
         // 공격 대상을 기준으로 explodeRange 반지름을 가지는 원형 레이를 통해 모든 콜라이더 검색.
-        Collider2D[] targets = Physics2D.OverlapCircleAll(_target.transform.position, explodeRange, EnemyMask);
+        Collider2D[] targets = Physics2D.OverlapCircleAll(target.transform.position, explodeRange, attackMask);
         foreach(Collider2D target in targets)
         {
             Enemy enemy = target.GetComponent<Enemy>();     // 검색된 콜라이더에게서 Enemy 컴포넌트 검색.
@@ -23,7 +23,7 @@ public class ExplodeTower : Tower
             enemy.OnDamaged(attackPower);
         }
 
-        Instantiate(explodeFx, _target.transform.position, Quaternion.identity);
+        Instantiate(explodeFx, target.transform.position, Quaternion.identity);
     }
 
     protected override void OnDrawGizmosSelected()

@@ -6,17 +6,16 @@ using UnityEngine;
 public abstract class Tower : MonoBehaviour
 {
     [Header("Info")]
-    [SerializeField] int price;             // 구매 가격.
+    [SerializeField] protected int price;             // 구매 가격.
 
     [Header("Attack")]
-    [SerializeField] float attackRange;     // 공격 범위.
-    [SerializeField] float attackRate;      // 공격 속도.
-    [SerializeField] int attackPower;       // 공격력.
-    [SerializeField] LayerMask attackMask;  // 공격 대상 마스크.
+    [SerializeField] protected float attackRange;     // 공격 범위.
+    [SerializeField] protected float attackRate;      // 공격 속도.
+    [SerializeField] protected int attackPower;       // 공격력.
+    [SerializeField] protected LayerMask attackMask;  // 공격 대상 마스크.
 
     private float delayTime;                // 공격 대기 시간.
     protected Enemy target;                 // 공격 대상.
-    protected LayerMask EnemyMask => attackMask;
 
     public int Price => price;              // 가격을 읽기 전용 프로퍼티로 외부 공개.
 
@@ -82,13 +81,13 @@ public abstract class Tower : MonoBehaviour
         if (delayTime <= 0.0f && target != null)                                // 대기 시간이 끝났다면..
         {
             delayTime = attackRate;                                             // 공격 대기 시간 갱신.
-            AttackToTarget(target, attackPower);
+            Attack();
         }
     }
 
     // abstract 함수는 선언만 할 수 있다.
     // 클래스를 상속받는 자식 클래스는 무조건 상속해야한다.
-    protected abstract void AttackToTarget(Enemy target, int attackPower);
+    protected abstract void Attack();
 
 
     protected virtual void OnDrawGizmosSelected()

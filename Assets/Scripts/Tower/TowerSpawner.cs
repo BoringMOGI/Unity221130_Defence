@@ -13,6 +13,11 @@ public class TowerSpawner : MonoBehaviour
     // World space   : 씬 상의 공간 (월드 그 자체 공간)
     // Screen space  : 화면 상의 공간 (카메라가 비추는 공간)
 
+    public void ChangeTower(Tower towerPrefab)
+    {
+        this.towerPrefab = towerPrefab;
+    }
+
     // Update is called once per frame
     void Update()
     {
