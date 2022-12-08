@@ -106,6 +106,12 @@ public class GameManager : Singleton<GameManager>
         GameUI.Instance.UpdateGoldText(gold);
         return true;
     }
+    public bool EnoughGold(int amount)
+    {
+        // 소지 골드가 충분한가요?
+        return gold >= amount;
+    }
+
     public void OnGoalEnemy()
     {
         hp -= 1;

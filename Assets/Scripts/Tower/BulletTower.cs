@@ -14,4 +14,5 @@ public class BulletTower : Tower
         Bullet bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
         bullet.Setup(target, bulletSpeed, attackPower);
     }
+
 }

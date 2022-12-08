@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public abstract class Tower : MonoBehaviour
 {
     [Header("Info")]
     [SerializeField] protected int price;             // 구매 가격.
+    [SerializeField] LineRenderer lineRenderer;       // 라인 렌더러.
 
     [Header("Attack")]
     [SerializeField] protected float attackRange;     // 공격 범위.
@@ -15,6 +18,7 @@ public abstract class Tower : MonoBehaviour
     [SerializeField] protected LayerMask attackMask;  // 공격 대상 마스크.
 
     private float delayTime;                // 공격 대기 시간.
+    private bool isActive;                  // 활성화가 되었는가?
     protected Enemy target;                 // 공격 대상.
 
     public int Price => price;              // 가격을 읽기 전용 프로퍼티로 외부 공개.
@@ -22,12 +26,19 @@ public abstract class Tower : MonoBehaviour
     private void Start()
     {
         delayTime = attackRate;
+
+        // 공격 범위를 그린다.
+        CalculateLine();
+        SwitchAttackRange(true);
     }
     private void Update()
     {
-        SearchToTarget();
-        LookAtTarget();
-        AttackToTarget();
+        if (isActive)
+        {
+            SearchToTarget();
+            LookAtTarget();
+            AttackToTarget();
+        }
     }
 
     private void SearchToTarget()
@@ -83,6 +94,37 @@ public abstract class Tower : MonoBehaviour
             delayTime = attackRate;                                             // 공격 대기 시간 갱신.
             Attack();
         }
+    }
+
+    public void Activate()
+    {
+        isActive = true;
+        SwitchAttackRange(false);
+    }
+
+    private void CalculateLine()
+    {
+        // 공격 범위만큼 원의 정점을 세팅한다.
+        var segments = 360;
+        lineRenderer.useWorldSpace = false;
+        lineRenderer.startWidth = 0.1f;
+        lineRenderer.endWidth = 0.1f;
+        lineRenderer.positionCount = segments + 1;
+
+        var pointCount = segments + 1; // add extra point to make startpoint and endpoint the same to close the circle
+        var points = new Vector3[pointCount];
+
+        for (int i = 0; i < pointCount; i++)
+        {
+            var rad = Mathf.Deg2Rad * (i * 360f / segments);
+            points[i] = new Vector3(Mathf.Sin(rad) * attackRange, Mathf.Cos(rad) * attackRange, -1f);
+        }
+
+        lineRenderer.SetPositions(points);
+    }
+    public void SwitchAttackRange(bool isOn)
+    {
+        lineRenderer.enabled = isOn;
     }
 
     // abstract 함수는 선언만 할 수 있다.

@@ -17,4 +17,20 @@ public class TileWall : MonoBehaviour
         onTower = tower;
         tower.transform.position = transform.position;
     }
+    
+    public void OnMouseOver()
+    {
+        if (isTower)
+            onTower.SwitchAttackRange(true);
+    }
+    public void OnMouseExit()
+    {
+        if (isTower)
+            onTower.SwitchAttackRange(false);
+    }
+    public void OnMouseUpAsButton()
+    {
+        if (isTower)
+            TowerControlUI.Instance.Open(onTower, transform.position);
+    }
 }
