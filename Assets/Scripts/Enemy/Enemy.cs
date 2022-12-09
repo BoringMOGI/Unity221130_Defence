@@ -107,7 +107,7 @@ public class Enemy : MonoBehaviour
 
         // Where(필터)
         // 리스트를 순회하면서 해당 요소의 지속시간을 감소했을때 0보다 클 경우만 가져온다.
-        debuffList = debuffList.Where(debuff => (debuff.continueTime -= Time.deltaTime) > 0.0f).ToList();
+        debuffList = debuffList.Where(debuff => (debuff.continueTime -= GameManager.DeltaTime) > 0.0f).ToList();
     }
 
     // 이동 관련
@@ -124,7 +124,7 @@ public class Enemy : MonoBehaviour
         // MoveTowords(Vector3, Vector3, float) : Vector3
         // => A지점에서 B지점까지 float속도로 움직였을 때의 위치를 리턴한다.
         Vector3 destination = point.Peek().position;
-        transform.position = Vector3.MoveTowards(transform.position, destination, currentMoveSpeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, destination, currentMoveSpeed * GameManager.DeltaTime);
 
         // 현재 내 위치와 목적지의 거리가 0.0f보다 작다는 말은 동일한 위치에 있다는 말이다.
         // 따라서 Queue의 Dequeue를 호출해 다음 목적지를 가리키게 하자.
@@ -133,7 +133,7 @@ public class Enemy : MonoBehaviour
 
         // 오일러 각도로 선언해서 사원수(Quaternion)각도로 바꿔달라는 함수다.
         // 1초 당 90도씩 돌아라.
-        transform.rotation = Quaternion.Euler(0, 0, rotate += -360 * Time.deltaTime);
+        transform.rotation = Quaternion.Euler(0, 0, rotate += -360 * GameManager.DeltaTime);
 
         // 체력바의 위치를 갱신한다.
         // 하지만 내 위치는 몸 중심이기 때문에 오차값을 수정해준다.

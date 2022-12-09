@@ -26,7 +26,7 @@ public class Bullet : MonoBehaviour
 
         // MoveTowords(A, B, T)
         // => A지점에서 B지점으로 향할 때 T만큼 움직인 위치 값을 반환한다.
-        transform.position = Vector3.MoveTowards(transform.position, target.transform.position, moveSpeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, target.transform.position, moveSpeed * GameManager.DeltaTime);
 
         // 나와 타겟의 거리가 0.0f 이하 즉, 동일하다면 데미지를 전달하고 삭제된다.
         if(Vector3.Distance(transform.position, target.transform.position) <= 0.0f)

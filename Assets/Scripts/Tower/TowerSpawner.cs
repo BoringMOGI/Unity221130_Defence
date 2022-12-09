@@ -22,6 +22,10 @@ public class TowerSpawner : MonoBehaviour
 
     public void OnCreateTower(Tower towerPrefab)
     {
+        // 타워를 설치 중이라면 무시한다.
+        if (previewTower != null)
+            return;
+
         // !(NOT) 연산자
         // EnoughGold는 요구치만큼 골드가 있는지 true, false로 대답한다.
         // 충분하다면 그 값을 반대로 돌려서 if문을 실행하지 못하게 하고
@@ -34,13 +38,19 @@ public class TowerSpawner : MonoBehaviour
 
         // 임시 타워를 생성한다.
         previewTower = Instantiate(towerPrefab, transform);
+        TowerControlUI.Instance.Close();
     }   
 
     void Update()
     {
-        if (previewTower == null)
-            return;
+        if (previewTower != null)
+            UpdateNewTower();
+        else
+            UpdateTowerUI();
+    }
 
+    private void UpdateNewTower()
+    {
         Vector3 point = Camera.main.ScreenToWorldPoint(Input.mousePosition);    // 월드상 마우스 위치.
         RaycastHit hit;
         TileWall tileWall = null;
@@ -55,7 +65,7 @@ public class TowerSpawner : MonoBehaviour
         {
             previewTower.transform.position = tileWall.transform.position;
 
-            if(Input.GetMouseButtonDown(0))                             // 마우스 왼쪽 클릭 (= 타워 설치)
+            if (Input.GetMouseButtonUp(0))                               // 마우스 왼쪽 해제 (= 타워 설치)
             {
                 GameManager.Instance.UseGold(previewTower.Price);       // 타워의 가격만큼 골드를 소비한다.
                 tileWall.SetTower(previewTower);                        // 타일 Cell에 타워를 설치한다.
@@ -72,10 +82,30 @@ public class TowerSpawner : MonoBehaviour
         }
 
         // 타워 설치 취소.
-        if(Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1))
         {
             Destroy(previewTower.gameObject);       // 인스턴스된 임시 타워를 제거한다.
             previewTower = null;                    // 참조 값을 null로 만들어 Update를 종료시킨다.
+        }
+    }
+    private void UpdateTowerUI()
+    {
+        if(Input.GetMouseButtonUp(0))
+        {            
+            Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(worldPosition, Vector3.forward, out hit))
+            {
+                TileWall tile = hit.collider.GetComponent<TileWall>();
+                if (tile.isTower)
+                    tile.OpenControlUI();
+                else
+                    TowerControlUI.Instance.Close();
+            }
+            else
+            {
+                TowerControlUI.Instance.Close();
+            }
         }
     }
 

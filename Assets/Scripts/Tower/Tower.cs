@@ -76,7 +76,7 @@ public abstract class Tower : MonoBehaviour
             lookRotation = Quaternion.FromToRotation(Vector2.right, dir);
 
             // 현재 내 회전 값에서 목표 방향까지 부드럽게(Smooth) 돌린다.
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 15 * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 15 * GameManager.DeltaTime);
         }
         /*else
         {
@@ -88,10 +88,10 @@ public abstract class Tower : MonoBehaviour
     private void AttackToTarget()
     {
         // 공격.
-        delayTime = Mathf.Clamp(delayTime - Time.deltaTime, 0.0f, attackRate);  // 대기 시간 감소.
-        if (delayTime <= 0.0f && target != null)                                // 대기 시간이 끝났다면..
+        delayTime = Mathf.Clamp(delayTime - GameManager.DeltaTime, 0.0f, attackRate);   // 대기 시간 감소.
+        if (delayTime <= 0.0f && target != null)                                        // 대기 시간이 끝났다면..
         {
-            delayTime = attackRate;                                             // 공격 대기 시간 갱신.
+            delayTime = attackRate;                                                     // 공격 대기 시간 갱신.
             Attack();
         }
     }

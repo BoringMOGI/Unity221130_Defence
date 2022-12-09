@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
+    public static float GameSpeed { get; private set; }
+    public static float DeltaTime => Time.deltaTime * GameSpeed;
+
     private enum STATE
     {
         Ready,      // 준비 상태 : 유저가 정비를 하는 시간.
@@ -22,9 +25,12 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
+        GameSpeed = 1.0f;
+
         GameUI.Instance.UpdateGoldText(gold);
         GameUI.Instance.UpdateHpText(hp);
         GameUI.Instance.UpdateWaveText(wave, maxWave);
+        GameUI.Instance.UpdateSpeedText(GameSpeed);
 
         readyTime = waveReadyTime;      // 대기 시간의 초기 값을 대입.
     }
@@ -47,7 +53,7 @@ public class GameManager : Singleton<GameManager>
 
     private void UpdateReady()
     {
-        readyTime = Mathf.Clamp(readyTime - Time.deltaTime, 0.0f, int.MaxValue);
+        readyTime = Mathf.Clamp(readyTime - GameManager.DeltaTime, 0.0f, int.MaxValue);
         GameUI.Instance.UpdateWaveControl(readyTime);
 
         if(readyTime <= 0.0f)
@@ -89,6 +95,16 @@ public class GameManager : Singleton<GameManager>
             state = STATE.Ready;    // 상태를 준비 단계로 변경.
         }
     }
+    public void OnSpeedUp()
+    {
+        // 게임 속도를 1.0추가 시키는데 그 값이 최대 속도인 3보다 높아졌다면 1로 초기화.
+        GameSpeed += 1.0f;
+        if (GameSpeed > 3.0f)
+            GameSpeed = 0.0f;
+
+        //Time.timeScale = GameSpeed;                   // 게임의 시간 배율(기본:1.0)
+        GameUI.Instance.UpdateSpeedText(GameSpeed);     // GameUI에게 시간 텍스트를 업데이트 시킨다.
+    }
 
     public void AddGold(int amount)
     {
@@ -122,10 +138,10 @@ public class GameManager : Singleton<GameManager>
 
     private void GameClear()
     {
-        Debug.Log("게임 클리어!!!");
+        GameUI.Instance.OnShowResult(true);
     }
     private void GameOver()
     {
-        Debug.Log("게임 오버...");
+        GameUI.Instance.OnShowResult(false);
     }
 }

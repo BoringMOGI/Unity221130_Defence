@@ -36,7 +36,12 @@ public class EnemySpanwer : Singleton<EnemySpanwer>
             Enemy newEnemy = Instantiate(enemyPrefab, points[0].position, Quaternion.identity, transform);
             newEnemy.Setup(points);
             remaining -= 1;
-            yield return new WaitForSeconds(spawnRate);
+
+            // WaitForSecond를 이용하면 시간 배율이 바뀌었을 때.. 바뀌기 전 값으로 초를 세고 있기 때문에
+            // 간격을 맞추기 위해서 직접 초를 센다.
+            float spawnTime = 0.0f;
+            while ((spawnTime += GameManager.DeltaTime) < spawnRate)
+                yield return null;
         }
     }
     

@@ -9,10 +9,15 @@ public class GameUI : Singleton<GameUI>
     [SerializeField] Text goldText;     // 소지 골드 텍스트.
     [SerializeField] Text lifeText;     // 생명력 텍스트.
     [SerializeField] Text waveText;     // 웨이브 텍스트.
+    [SerializeField] Text speedText;    // 속도 텍스트.
 
     [Header("Wave Control")]
     [SerializeField] GameObject waveControlPanel;
     [SerializeField] Text waveControlText;
+
+    [Header("Result")]
+    [SerializeField] GameObject resultPanel;
+    [SerializeField] Text resultText;
 
     public HpBar GetHpBar()
     {
@@ -32,7 +37,10 @@ public class GameUI : Singleton<GameUI>
     {
         waveText.text = $"{wave}/{maxWave}";
     }
-
+    public void UpdateSpeedText(float speed)
+    {
+        speedText.text = $"x{speed.ToString("#.0")}";
+    }
     public void UpdateWaveControl(float readyTime)
     {
         waveControlPanel.SetActive(readyTime > 0.0f);   // 대기 시간이 있다면 컨트롤 패널을 켠다.
@@ -43,4 +51,11 @@ public class GameUI : Singleton<GameUI>
         int time = Mathf.CeilToInt(readyTime);
         waveControlText.text = $"다음 웨이브까지 {time}초";
     }
+
+    public void OnShowResult(bool isGameClear)
+    {
+        resultPanel.SetActive(true);
+        resultText.text = isGameClear ? "GAME CLEAR" : "GAME OVER";
+    }
+
 }
