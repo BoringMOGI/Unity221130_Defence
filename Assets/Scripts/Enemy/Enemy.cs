@@ -3,34 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public enum DEBUFF
-{
-    Slow,   // 슬로우.
-    Etc2,   // 임시 1
-    Etc3,   // 임시 2
-
-    Count,
-}
-
-[System.Serializable]
-public class Debuff
-{
-    public DEBUFF type;         // 디버프 종류.
-    public int priority;        // 우선 순위.
-    public float continueTime;  // 지속 시간.
-    public float value;         // 디버프에 대한 특정 값.
-
-    public Debuff GetCopy()
-    {
-        Debuff copy = new Debuff();
-        copy.type = type;
-        copy.priority = priority;
-        copy.continueTime = continueTime;
-        copy.value = value;
-
-        return copy;
-    }
-}
 
 public class Enemy : MonoBehaviour
 {

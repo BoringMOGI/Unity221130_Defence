@@ -1,0 +1,4 @@
+ID	디버프명	Type	Priority	Continue	Value
+1	마비 Lv.1	Slow	1	4	0.85
+2	마비 Lv.2	Slow	2	4	0.7
+3	마비 Lv.3	Slow	3	4	0.5

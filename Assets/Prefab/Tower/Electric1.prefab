@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2494434207656126481
+--- !u!1 &4878006788233590271
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,39 +8,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4750316141817236346}
-  - component: {fileID: 651624608403887536}
-  - component: {fileID: 3474721922294398484}
-  - component: {fileID: 1371131460668927138}
+  - component: {fileID: 2360071723801663124}
+  - component: {fileID: 7505005540530407518}
+  - component: {fileID: 6203024479411342876}
+  - component: {fileID: 9154209056224024516}
   m_Layer: 0
-  m_Name: Tower_Bullet_Lv1
+  m_Name: Electric1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4750316141817236346
+--- !u!4 &2360071723801663124
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2494434207656126481}
+  m_GameObject: {fileID: 4878006788233590271}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.7339026, y: -0.8651294, z: 0}
+  m_LocalPosition: {x: 6.57, y: -1.47, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &651624608403887536
+--- !u!212 &7505005540530407518
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2494434207656126481}
+  m_GameObject: {fileID: 4878006788233590271}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 50
-  m_Sprite: {fileID: 21300000, guid: a43bd8d4193581b468bca5e9f0ed3773, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c6003219f4bc7f44e83caa0c332e68ac, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -86,13 +86,39 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!120 &3474721922294398484
+--- !u!114 &6203024479411342876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4878006788233590271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f47cc3f0c1c58346bd7295ea4f298e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  price: 500
+  lineRenderer: {fileID: 9154209056224024516}
+  attackRange: 1.5
+  attackRate: 3
+  attackPower: 0
+  attackMask:
+    serializedVersion: 2
+    m_Bits: 64
+  debuff:
+    type: 0
+    priority: 1
+    continueTime: 4
+    value: 0.85
+  fx: {fileID: 9027514048236820043, guid: effb650189dc5714e9e9801b1cfb3991, type: 3}
+--- !u!120 &9154209056224024516
 LineRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2494434207656126481}
+  m_GameObject: {fileID: 4878006788233590271}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -106,7 +132,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -127,10 +153,12 @@ LineRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Positions: []
+  m_Positions:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.1
+    widthMultiplier: 1
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -148,8 +176,8 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 0.3537736, b: 0.3537736, a: 1}
-      key1: {r: 1, g: 0.35686275, b: 0.35686275, a: 1}
+      key0: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -183,25 +211,3 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
---- !u!114 &1371131460668927138
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2494434207656126481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f24cc6b072bfc9d48a0fd386af23a01b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  price: 300
-  lineRenderer: {fileID: 3474721922294398484}
-  attackRange: 2.5
-  attackRate: 1
-  attackPower: 1
-  attackMask:
-    serializedVersion: 2
-    m_Bits: 64
-  bulletPrefab: {fileID: 2094213106673698554, guid: b63ef973fe43162419a6f26bc429ac81, type: 3}
-  bulletSpeed: 20

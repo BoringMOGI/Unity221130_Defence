@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class ElectricTower : Tower
 {
-    [Header("Debuff")]
-    [SerializeField] Debuff debuff;
-    [SerializeField] ParticleSystem fx;
+    Debuff debuff;
+
+    public override void Setup(TowerInfo info)
+    {
+        base.Setup(info);
+        debuff = info.debuff.GetCopy();
+    }
 
     protected override void Attack()
     {
         // 내 주변 일정 범위 적에게 디버프를 건다.
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, attackRange, attackMask);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, attackRange, targetLayer);
         foreach(Collider2D collider in colliders)
         {
             Enemy enemy = collider.gameObject.GetComponent<Enemy>();
