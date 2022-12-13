@@ -8,14 +8,15 @@ using UnityEngine.EventSystems;
 public abstract class Tower : MonoBehaviour
 {
     [Header("Info")]
-    [SerializeField] LineRenderer lineRenderer;       // 라인 렌더러.
+    [SerializeField] LineRenderer lineRenderer;                 // 라인 렌더러.
+    [SerializeField] protected SpriteRenderer spriteRenderer;   // 스프라이트 렌더러.
+    [SerializeField] protected ParticleSystem fx;               // 타워의 이펙트.
 
     // 타워의 기본 정보.
-    protected int price;             // 구매 가격.
-    protected float attackRange;     // 공격 범위.
-    protected float attackRate;      // 공격 속도.
-    protected int attackPower;       // 공격력.
-    protected ParticleSystem fx;     // 타워의 이펙트.
+    [SerializeField] protected int price;             // 구매 가격.
+    [SerializeField] protected float attackRange;     // 공격 범위.
+    [SerializeField] protected float attackRate;      // 공격 속도.
+    [SerializeField] protected int attackPower;       // 공격력.
 
     // 내부 멤버 변수.
     private float delayTime;                // 공격 대기 시간.
@@ -54,6 +55,7 @@ public abstract class Tower : MonoBehaviour
         attackRate = info.attackRate;
         attackPower = info.attackPower;
         fx = info.fx;
+        spriteRenderer.sprite = info.towerSprite;
     }
 
     private void SearchToTarget()

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Purchasing;
 using UnityEngine;
 
 public enum TOWER
@@ -9,6 +10,8 @@ public enum TOWER
     Explode,
     Electric,
 }
+
+[System.Serializable]
 public class TowerInfo
 {
     public string name;
@@ -19,82 +22,107 @@ public class TowerInfo
     public float attackRate;
     public int attackPower;
     public float explodeRange;
-    public ParticleSystem fx;
     public Debuff debuff;
+    public Tower prefab;
+    public Sprite towerSprite;
+    public ParticleSystem fx;
 
-    public TowerInfo GetCopy()
+    public TowerInfo(string csv, DebuffData debuffData)
     {
-        TowerInfo copy = new TowerInfo();
-        copy.name = name;
-        copy.type = type;
-        copy.level = level;
-        copy.price = price;
-        copy.attackRange = attackRange;
-        copy.attackRate = attackRate;
-        copy.attackPower = attackPower;
-        copy.explodeRange = explodeRange;
-        copy.fx = fx;                       // fx는 프리팹이기 때문에 상관없다. (나중에 인스턴스하기 때문)
-        copy.debuff = debuff.GetCopy();     // 참조 값인 debuff를 그냥 대입하면 복사가 아니다.
-        return copy;
+        string[] datas = csv.Split(',');
+        name = datas[0];
+        type = (TOWER)System.Enum.Parse(typeof(TOWER), datas[1]);
+        level = int.Parse(datas[2]);
+        price = int.Parse(datas[3]);
+        attackRange = float.Parse(datas[4]);
+        attackRate = float.Parse(datas[5]);
+        attackPower = int.Parse(datas[6]);
+        explodeRange = float.Parse(datas[7]);
+        debuff = debuffData.GetDebuff(int.Parse(datas[8]));
+        prefab = Resources.Load<Tower>($"Tower/{datas[9]}");
+        towerSprite = Resources.Load<Sprite>($"Tower/{datas[10]}");
+        fx = Resources.Load<ParticleSystem>($"Fx/{datas[11].Trim()}");
+    }
+    public Tower GetTowerPrefab()
+    {
+        prefab.Setup(this);
+        return prefab;
     }
 }
 
 public class TowerData : MonoBehaviour
 {
     [System.Serializable]
-    struct TowerGroup
+    class TowerGroup
     {
-        public TOWER type;
-        public Tower[] prefabs;
+        public TOWER type;              // 그룹의 타입.
+        public List<TowerInfo> infos;   // 그룹의 레벨별 타워 정보.
+        
+        public TowerGroup(TOWER type)
+        {
+            this.type = type;
+            infos = new List<TowerInfo>();
+        }
+
+        public TowerInfo GetTowerInfo(int level)
+        {
+            // 인포 리스트에서 level에 해당하는 info정보를 리턴한다.
+            var find = infos.Where(info => info.level == level);
+            return find.Count() <= 0 ? null : find.First();
+        }
     }
 
     // 데이터가 대입된 타워 프리팹을 관리하는 클래스.
 
-    [SerializeField] string fileName;
-    [SerializeField] EffectData effectData;
+    [SerializeField] TextAsset dataAsset;
     [SerializeField] DebuffData debuffData;
-    [SerializeField] TowerGroup[] towerGroups;
+    [SerializeField] List<TowerGroup> towerGroups;
 
     private void Start()
     {
-        effectData.Setup();
         debuffData.Setup();
 
-        TextAsset towerFile = Resources.Load<TextAsset>(fileName);
-
-        string tsv = towerFile.text.Trim();
-        string[] lines = tsv.Split('\n');
-        for (int i = 1; i < lines.Length; i++)
+        string csv = dataAsset.text.Trim();
+        string[] lines = csv.Split('\n');
+        for (int index = 1; index < lines.Length; index++)
         {
-            TowerInfo info = new TowerInfo();
-
-            #region TSV파싱
-            string[] datas = lines[i].Split('\t');
-            info.name = datas[0];
-            info.type = (TOWER)System.Enum.Parse(typeof(TOWER), datas[1]);
-            info.level = int.Parse(datas[2]);
-            info.price = int.Parse(datas[3]);
-            info.attackRange = float.Parse(datas[4]);
-            info.attackRate = float.Parse(datas[5]);
-            info.attackPower = int.Parse(datas[6]);
-            info.explodeRange = float.Parse(datas[7]);
-            info.fx = effectData.GetEffect(int.Parse(datas[8]));
-            info.debuff = debuffData.GetDebuff(int.Parse(datas[9]));
-            #endregion
-
-            // 타워 프리팹 배열에서 info값에 해당하는 프리팹을 찾아라.
-            // 해당 프리팹에게 info데이터를 세팅한다.
-            Tower[] prefabs = towerGroups.Where(g => g.type == info.type).First().prefabs;
-            if (info.level <= prefabs.Length)
-                prefabs[info.level - 1].Setup(info);
+            string line = lines[index];                         // i번째 열 데이터. (가로 한 줄)
+            TowerInfo info = new TowerInfo(line, debuffData);   // csv 열 데이터를 넘겨서 값을 설정한다.
+            TowerGroup group = GetTowerGroup(info.type);        // info의 type에 해당하는 그룹을 찾는다.
+            group.infos.Add(info);
         }
+    }
+    private TowerGroup GetTowerGroup(TOWER type)
+    {
+        // info가 들어갈 그룹을 찾는다.
+        TowerGroup group = null;
+        var find = towerGroups.Where(g => g.type == type);      // 열거자 중에서 type에 해당하는 그룹을 찾는다.
+
+        if (find.Count() <= 0)                      // 개수가 0이하라면 그룹이 없다는 말이기 때문에
+        {
+            group = new TowerGroup(type);           // 새로운 그룹을 생성하고
+            towerGroups.Add(group);                 // List에 대입한다.
+        }
+        else
+        {
+            group = find.First();                   // 개수가 1이상이라면 그대로 반환한다.
+        }
+
+        return group;
     }
 
 
     public Tower GetTowerPrefab(TOWER type, int level)
     {
-        // 배열에서 type에 해당하는 그룹을 찾고 level - 1번째 타워 프리팹을 전달한다.
-        return towerGroups.Where(t => t.type == type).First().prefabs[level - 1];
+        var find = towerGroups.Where(g => g.type == type);
+        if(find.Count () > 0)
+        {
+            TowerGroup group = find.First();                    // 그룹을 찾는다.
+            TowerInfo towerInfo = group.GetTowerInfo(level);    // 그룹중 level에 해당하는 info를 찾는다.
+            return towerInfo.GetTowerPrefab();                  // info를 통해 프리팹을 전달 받는다.
+        }
+
+        return null;
     }
 
 }

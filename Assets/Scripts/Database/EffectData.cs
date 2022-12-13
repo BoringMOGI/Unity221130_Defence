@@ -28,10 +28,19 @@ public class EffectData : MonoBehaviour
         {
             string[] datas = lines[i].Split('\t');  // 한 라인을 탭(Tab)기준으로 자른다.
             int id = int.Parse(datas[0]);           // 이펙트의 ID 값.
-            string fxName = datas[1];               // 이펙트의 이름.
+            string fxName = datas[1].Trim();        // 이펙트의 이름.
 
-            // 파티클 배열에서 이름이 같은 이펙트 하나를 찾는다.
-            ParticleSystem fx = effectPrefabs.Where(fx => fx.name.Equals(fxName)).First();
+            ParticleSystem fx = null;
+            foreach(ParticleSystem prefab in effectPrefabs)
+            {
+                // i번째 데이터 속 이펙트의 이름과 실제 프리팹 배열의 이름이 같은가?
+                // 문자열 비교시 중요하지 않다면 두 대상을 전부 소문자로 만들어서 비교.
+                if(prefab.name.ToLower().Contains(fxName.ToLower()))
+                {
+                    fx = prefab;
+                    break;
+                }
+            }
             storage.Add(id, fx);
         }
     }
