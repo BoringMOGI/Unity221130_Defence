@@ -89,18 +89,11 @@ public abstract class Tower : MonoBehaviour
         {
             // FromToRotation(축 방향, 실제 바라 볼 방향)
             // = 축 방향을 실제 바라 볼 방향으로 향하는 회전 값을 반환.
-            Vector3 dir = (target.transform.position - transform.position);
-            lookRotation = Quaternion.FromToRotation(Vector2.right, dir);
-
-            // 현재 내 회전 값에서 목표 방향까지 부드럽게(Smooth) 돌린다.
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 15 * GameManager.DeltaTime);
+            Vector3 movement = (target.transform.position - transform.position);
+            float angle = Mathf.Atan2(movement.y, movement.x) * Mathf.Rad2Deg;
+            Quaternion angleAxis = Quaternion.AngleAxis(angle, Vector3.forward);
+            transform.rotation = Quaternion.Slerp(transform.rotation, angleAxis, 30 * GameManager.DeltaTime);
         }
-        /*else
-        {
-            // Euler(Vector3) : Vector3(오일러 각도)를 사원수(Quaternion)로 바꿔주는 함수.
-            lookRotation = Quaternion.Euler(Vector2.right);
-        }*/
-                
     }
     private void AttackToTarget()
     {

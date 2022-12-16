@@ -1,9 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Purchasing;
 using UnityEngine;
 
+[System.Serializable]
 public enum TOWER
 {
     Normal,
@@ -23,8 +22,8 @@ public class TowerInfo
     public int attackPower;
     public float explodeRange;
     public Debuff debuff;
-    public Tower prefab;
     public Sprite towerSprite;
+    public Tower prefab;
     public ParticleSystem fx;
 
     public TowerInfo(string csv, DebuffData debuffData)
@@ -42,11 +41,6 @@ public class TowerInfo
         prefab = Resources.Load<Tower>($"Tower/{datas[9]}");
         towerSprite = Resources.Load<Sprite>($"Tower/{datas[10]}");
         fx = Resources.Load<ParticleSystem>($"Fx/{datas[11].Trim()}");
-    }
-    public Tower GetTowerPrefab()
-    {
-        prefab.Setup(this);
-        return prefab;
     }
 }
 
@@ -112,17 +106,16 @@ public class TowerData : MonoBehaviour
     }
 
 
-    public Tower GetTowerPrefab(TOWER type, int level)
+    public TowerInfo GetTowerInfo(TOWER type, int level)
     {
         var find = towerGroups.Where(g => g.type == type);
         if(find.Count () > 0)
         {
             TowerGroup group = find.First();                    // 그룹을 찾는다.
             TowerInfo towerInfo = group.GetTowerInfo(level);    // 그룹중 level에 해당하는 info를 찾는다.
-            return towerInfo.GetTowerPrefab();                  // info를 통해 프리팹을 전달 받는다.
+            return towerInfo;                                   // 원하는 타워 정보를 전달한다.
         }
 
         return null;
     }
-
 }

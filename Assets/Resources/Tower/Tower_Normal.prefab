@@ -195,13 +195,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f24cc6b072bfc9d48a0fd386af23a01b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  price: 300
   lineRenderer: {fileID: 3474721922294398484}
+  spriteRenderer: {fileID: 651624608403887536}
+  fx: {fileID: 0}
+  price: 300
   attackRange: 2.5
   attackRate: 1
   attackPower: 1
-  attackMask:
-    serializedVersion: 2
-    m_Bits: 64
   bulletPrefab: {fileID: 2094213106673698554, guid: b63ef973fe43162419a6f26bc429ac81, type: 3}
   bulletSpeed: 20

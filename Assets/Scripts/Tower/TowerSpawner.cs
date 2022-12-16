@@ -5,6 +5,8 @@ using UnityEngine.EventSystems;
 
 public class TowerSpawner : MonoBehaviour
 {
+    [SerializeField] TowerData towerData;
+
     private Tower previewTower;     // 설치되기 전 예비 타워.
 
     // 에디터 상의 공간 (Space)
@@ -20,24 +22,28 @@ public class TowerSpawner : MonoBehaviour
     // Input.GetMouseButtonDown : 마우스 버튼을 눌렀을 때.
     // 매개변수 button > 0:왼쪽, 1:오른쪽, 2:휠, 3:추가버튼1, 4:추가버튼2
 
-    public void OnCreateTower(Tower towerPrefab)
+    public void OnCreateTower(int index)
     {
         // 타워를 설치 중이라면 무시한다.
         if (previewTower != null)
             return;
 
+        TOWER type = (TOWER)index;                              // 버튼의 index를 Type으로 변환.
+        TowerInfo info = towerData.GetTowerInfo(type, 1);       // 1레벨 type 타워 정보르르 받아온다.
+
         // !(NOT) 연산자
         // EnoughGold는 요구치만큼 골드가 있는지 true, false로 대답한다.
         // 충분하다면 그 값을 반대로 돌려서 if문을 실행하지 못하게 하고
         // 불충분하다면 역시나 반대로 돌려서 if문을 실행하게 만든다.
-        if(!GameManager.Instance.EnoughGold(towerPrefab.Price))
+        if(!GameManager.Instance.EnoughGold(info.price))
         {
             Debug.Log("소지 골드가 부족합니다!!");
             return;
         }
 
-        // 임시 타워를 생성한다.
-        previewTower = Instantiate(towerPrefab, transform);
+        previewTower = Instantiate(info.prefab, transform);     // 임시 타워 생성.
+        previewTower.Setup(info);                               // 임시 타워에게 정보를 넘겨서 세팅.
+
         TowerControlUI.Instance.Close();
     }   
 

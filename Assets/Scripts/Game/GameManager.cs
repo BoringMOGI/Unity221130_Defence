@@ -58,7 +58,7 @@ public class GameManager : Singleton<GameManager>
 
         if(readyTime <= 0.0f)
         {
-            EnemySpanwer.Instance.StartSpawn();     // 적 생성 시작.
+            EnemySpanwer.Instance.StartWave();     // 적 생성 시작.
             readyTime = waveReadyTime;              // 대기 시간 초기화.
             state = STATE.Wave;                     // 상태 변경.
         }

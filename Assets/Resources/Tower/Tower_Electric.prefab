@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2360071723801663124}
   - component: {fileID: 7505005540530407518}
-  - component: {fileID: 6203024479411342876}
   - component: {fileID: 9154209056224024516}
+  - component: {fileID: 6203024479411342876}
   m_Layer: 0
   m_Name: Tower_Electric
   m_TagString: Untagged
@@ -86,32 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6203024479411342876
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4878006788233590271}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f47cc3f0c1c58346bd7295ea4f298e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  price: 500
-  lineRenderer: {fileID: 9154209056224024516}
-  attackRange: 1.5
-  attackRate: 3
-  attackPower: 0
-  attackMask:
-    serializedVersion: 2
-    m_Bits: 64
-  debuff:
-    type: 0
-    priority: 1
-    continueTime: 4
-    value: 0.85
-  fx: {fileID: 9027514048236820043, guid: effb650189dc5714e9e9801b1cfb3991, type: 3}
 --- !u!120 &9154209056224024516
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -132,7 +106,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -176,8 +150,8 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 1}
+      key0: {r: 1, g: 0.3537736, b: 0.3537736, a: 1}
+      key1: {r: 1, g: 0.35686275, b: 0.35686275, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -211,3 +185,22 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!114 &6203024479411342876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4878006788233590271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f47cc3f0c1c58346bd7295ea4f298e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lineRenderer: {fileID: 9154209056224024516}
+  spriteRenderer: {fileID: 7505005540530407518}
+  fx: {fileID: 9027514048236820043, guid: effb650189dc5714e9e9801b1cfb3991, type: 3}
+  price: 600
+  attackRange: 2
+  attackRate: 3
+  attackPower: -1

@@ -4,14 +4,25 @@ using UnityEngine;
 
 public class EnemySpanwer : Singleton<EnemySpanwer>
 {
+    [SerializeField] StageData stageData;   // 
     [SerializeField] Enemy enemyPrefab;     // 적 프리팹.
     [SerializeField] float spawnRate;       // 생성 주기.
-    [SerializeField] int spawnCount;        // 생성할 개수.
     [SerializeField] Transform[] points;    // 적이 이동할 위치 좌표 배열.
 
+    StageInfo stage;
+    int wave;
+    int maxWave;
     int aliveEnemyCount;    // 살아있는 적의 개수.
 
-    public void StartSpawn()
+    private void Start()
+    {
+        stageData.Setup();
+        stage = stageData.GetStageInfo(1);      // 1스테이지에 대한 웨이브 정보.
+        wave = 1;                               // 현재 웨이브.
+        maxWave = stage.enemyInfoList.Count;    // 최종 웨이브.
+    }
+
+    public void StartWave()
     {
         StartCoroutine(Spawn());
     }
@@ -28,14 +39,13 @@ public class EnemySpanwer : Singleton<EnemySpanwer>
 
     private IEnumerator Spawn()
     {
-        aliveEnemyCount = spawnCount;   // 생존 적의 개수를 생성 개수로 대입.
-        int remaining = spawnCount;     // 남은 개수.
-        while(remaining > 0)            // 남은 개수가 0보다 클 때.
-        {
+        EnemyInfo waveInfo = stage.enemyInfoList[wave -1];
+        aliveEnemyCount = waveInfo.count;                   // 생존 적의 개수를 생성 개수로 대입.
+        for(int i = 0; i< waveInfo.count; i++)              // 이번 웨이브의 적 생성 개수만큼 반복.
+        { 
             // points의 최초 위치에 적을 만든다.
             Enemy newEnemy = Instantiate(enemyPrefab, points[0].position, Quaternion.identity, transform);
-            newEnemy.Setup(points);
-            remaining -= 1;
+            newEnemy.Setup(waveInfo, points);
 
             // WaitForSecond를 이용하면 시간 배율이 바뀌었을 때.. 바뀌기 전 값으로 초를 세고 있기 때문에
             // 간격을 맞추기 위해서 직접 초를 센다.

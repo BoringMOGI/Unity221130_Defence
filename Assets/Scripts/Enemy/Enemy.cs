@@ -21,12 +21,17 @@ public class Enemy : MonoBehaviour
 
     float currentMoveSpeed;     // 현재 이동 속도.
 
-    public void Setup(Transform[] points)
+    public void Setup(EnemyInfo info, Transform[] points)
     {
+        // 적에 대한 기본 정보 세팅.
+        spriteRenderer.sprite = info.sprite;
+        hp = maxHp = info.hp;
+        moveSpeed = info.speed;
+        gold = info.gold;
+
         // 배열도 큐도 콜렉션의 일종이기 때문에 같은 원리로 초기화가 가능하다.
         point = new Queue<Transform>(points);
         hpBar = GameUI.Instance.GetHpBar();         // GamUI에게서 체력바 하나를 받아온다.
-        maxHp = hp;                                 // 내 최대 체력을 현재 체력으로 대입한다.
 
         // 1프레임 오차 때문에 받아오자 마자 위치를 갱신해준다.
         hpBar.SetPosition(transform.position + hpBarOffset);

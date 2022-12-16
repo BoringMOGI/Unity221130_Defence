@@ -38,15 +38,13 @@ public class Debuff
 
 public class DebuffData : MonoBehaviour
 {
-    [SerializeField] string fileName;
+    [SerializeField] TextAsset debuffFile;
 
     Dictionary<int, Debuff> storage;
 
     public void Setup()
     {
         storage = new Dictionary<int, Debuff>();
-
-        TextAsset debuffFile= Resources.Load<TextAsset>(fileName);
 
         string tsv = debuffFile.text.Trim();
         string[] lines = tsv.Split('\n');
