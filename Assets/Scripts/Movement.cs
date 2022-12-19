@@ -75,13 +75,6 @@ public class Movement : MonoBehaviour
     Vector3 dir;
     void Update()
     {
-        mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        dir = mouseWorldPosition -target.position;
-        dir.z = 0;
-
-        Quaternion lookRotation = Quaternion.LookRotation(dir);
-        transform.localRotation = Quaternion.RotateTowards(transform.localRotation, lookRotation, 45f * Time.deltaTime);
-
         //Vector3 movement = target.position - transform.position;
         //float x = movement.x;
         //float y = movement.y;
